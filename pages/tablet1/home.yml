@@ -127,22 +127,22 @@ canvas:
             noCanvasShadow: true
             w: 110
             x: 130
-            y: 400
+            y: 399
           slots:
             default:
               - component: oh-label-card
                 config:
                   action: group
-                  actionGroupPopupItem: grLuciAutomatiche
+                  actionGroupPopupItem: grLuciNotturne
                   fontSize: 56px
                   icon: iconify:raphael:lamp-alt
-                  iconColor: "=(items.grLuciAutomatiche.state == 'ON') ? 'yellow' : 'white'"
+                  iconColor: "=(items.grLuciNotturne.state == 'ON') ? 'yellow' : 'white'"
                   iconSize: 64
-                  item: grLuciAutomatiche
+                  item: grLuciNotturne
                   label: " "
                   noShadow: true
                   outline: true
-                  title: AUTO
+                  title: NIGHT
                   vertical: true
         - component: oh-canvas-item
           config:
@@ -172,8 +172,8 @@ canvas:
           config:
             h: 120
             noCanvasShadow: true
-            w: 258
-            x: 742
+            w: 210
+            x: 790
             y: 280
           slots:
             default:
@@ -183,10 +183,10 @@ canvas:
                   actionAnalyzerCoordSystem: time
                   actionAnalyzerItems:
                     - ptPTCucinaRilevamentoGas
-                  fontSize: 34px
+                  fontSize: 30px
                   icon: iconify:mdi:gas-burner
                   iconColor: "=(items.ptPTCucinaRilevamentoGas.state > 100) ? 'red' : 'green'"
-                  iconSize: 56
+                  iconSize: 44
                   item: ptPTCucinaRilevamentoGas
                   noShadow: true
                   outline: true
@@ -196,9 +196,9 @@ canvas:
           config:
             h: 120
             noCanvasShadow: true
-            w: 180
-            x: 21
-            y: 279
+            w: 150
+            x: 20
+            y: 280
           slots:
             default:
               - component: oh-label-card
@@ -207,9 +207,9 @@ canvas:
                   actionAnalyzerCoordSystem: time
                   actionAnalyzerItems:
                     - grTemperatureEX
-                  fontSize: 36px
+                  fontSize: 32px
                   icon: iconify:carbon:temperature-celsius
-                  iconSize: 50
+                  iconSize: 40
                   item: grTemperatureEX
                   label: = Math.round(items.grTemperatureEX.state * 10.0) / 10.0 + "°"
                   noShadow: true
@@ -222,8 +222,8 @@ canvas:
           config:
             h: 120
             noCanvasShadow: true
-            w: 180
-            x: 200
+            w: 150
+            x: 170
             y: 280
           slots:
             default:
@@ -233,9 +233,9 @@ canvas:
                   actionAnalyzerCoordSystem: time
                   actionAnalyzerItems:
                     - grTemperaturePP
-                  fontSize: 36px
+                  fontSize: 32px
                   icon: iconify:carbon:temperature-celsius
-                  iconSize: 50
+                  iconSize: 40
                   item: grTemperaturePP
                   label: = Math.round(items.grTemperaturePP.state * 10.0) / 10.0 + "°"
                   noShadow: true
@@ -246,8 +246,8 @@ canvas:
           config:
             h: 120
             noCanvasShadow: true
-            w: 180
-            x: 380
+            w: 150
+            x: 320
             y: 280
           slots:
             default:
@@ -257,9 +257,9 @@ canvas:
                   actionAnalyzerCoordSystem: time
                   actionAnalyzerItems:
                     - grTemperaturePT
-                  fontSize: 36px
+                  fontSize: 32px
                   icon: iconify:carbon:temperature-celsius
-                  iconSize: 50
+                  iconSize: 40
                   item: grTemperaturePT
                   label: = Math.round(items.grTemperaturePT.state * 10.0) / 10.0 + "°"
                   noShadow: true
@@ -270,8 +270,8 @@ canvas:
           config:
             h: 120
             noCanvasShadow: true
-            w: 180
-            x: 560
+            w: 150
+            x: 470
             y: 280
           slots:
             default:
@@ -281,9 +281,9 @@ canvas:
                   actionAnalyzerCoordSystem: time
                   actionAnalyzerItems:
                     - grTemperaturePS
-                  fontSize: 36px
+                  fontSize: 32px
                   icon: iconify:carbon:temperature-celsius
-                  iconSize: 50
+                  iconSize: 40
                   item: grTemperaturePS
                   label: = Math.round(items.grTemperaturePS.state * 10.0) / 10.0 + "°"
                   noShadow: true
@@ -292,10 +292,10 @@ canvas:
                   vertical: false
         - component: oh-canvas-item
           config:
-            h: 86
+            h: 85
             noCanvasShadow: true
-            w: 255
-            x: 23
+            w: 254
+            x: 20
             y: 525
           slots:
             default:
@@ -305,35 +305,40 @@ canvas:
                   actionAnalyzerCoordSystem: time
                   actionAnalyzerItems:
                     - ptNetworkSpeedtestDownload
+                    - ptNetworkSpeedtestUpload
                   fontSize: 32px
-                  icon: iconify:mingcute:download-3-fill
+                  icon: iconify:tabler:network
                   iconSize: 48
-                  label: =Math.round(#'ptNetworkSpeedtestDownload') + ' Mbps'
+                  label: =Math.round(#'ptNetworkSpeedtestDownload') + '/' +
+                    Math.round(#'ptNetworkSpeedtestUpload') + ' Mb'
                   noShadow: true
                   outline: true
-                  vertical: false
                   style:
-                    - opacity: "=dayjs(@@'ptNetworkSpeedtestTS').add(15, 'minute') < dayjs() ? 0.3 :
+                    - opacity: "=dayjs(@@'ptNetworkSpeedtestTS').add(65, 'minute') < dayjs() ? 0.3 :
                         1"
+                  vertical: false
         - component: oh-canvas-item
           config:
             h: 86
             noCanvasShadow: true
-            w: 255
+            w: 85
             x: 20
-            y: 611
+            y: 610
           slots:
             default:
               - component: oh-label-card
                 config:
-                  action: analyzer
-                  actionAnalyzerCoordSystem: time
-                  actionAnalyzerItems:
-                    - ptNetworkSpeedtestUpload
+                  action: toggle
+                  actionCommand: ON
+                  actionCommandAlt: OFF
+                  actionConfirmation: Sei sicuro?
+                  actionItem: ptPTIngressoSerratura
                   fontSize: 32px
-                  icon: iconify:mingcute:upload-3-fill
+                  icon: "=(@'ptPTIngressoSerratura' == 'OFF') ?
+                    'iconify:material-symbols:lock-open-outline-rounded' :
+                    'iconify:material-symbols:lock-outline'"
+                  iconColor: "=(@'ptPTIngressoSerratura' == 'OFF') ? 'green' : 'red'"
                   iconSize: 48
-                  label: =Math.round(#'ptNetworkSpeedtestUpload') + ' Mbps'
                   noShadow: true
                   outline: true
                   vertical: false
@@ -524,7 +529,7 @@ canvas:
             noCanvasShadow: true
             w: 195
             x: 545
-            y: 611
+            y: 610
           slots:
             default:
               - component: oh-label-card
@@ -549,18 +554,22 @@ canvas:
             h: 86
             noCanvasShadow: true
             w: 270
-            x: 275
-            y: 611
+            x: 278
+            y: 610
           slots:
             default:
               - component: oh-label-card
                 config:
-                  action: group
-                  actionGroupPopupItem: eqPSLavanderiaLavatrice
+                  action: toggle
+                  actionCommand: ON
+                  actionCommandAlt: OFF
+                  actionGroupPopupItem: ptEXPompaPiscina
+                  actionItem: ptEXPompaPiscina
                   fontSize: 32px
-                  icon: iconify:mdi:washing-machine
+                  icon: iconify:mdi:swimming-pool
+                  iconColor: "=(@'ptEXPompaPiscina') == 'ON' ? 'cyan' : 'gray'"
                   iconSize: 52
-                  item: ptPSLavanderiaLavatriceWasherState
+                  item: ptEXPompaPiscina
                   noShadow: true
                   outline: true
                   vertical: false
@@ -570,7 +579,7 @@ canvas:
             noCanvasShadow: true
             w: 195
             x: 545
-            y: 524
+            y: 525
           slots:
             default:
               - component: oh-label-card
@@ -591,3 +600,64 @@ canvas:
                   item: ptEXStazioneMeteoCrepuscolare
                   noShadow: true
                   outline: true
+        - component: oh-canvas-item
+          config:
+            h: 120
+            noCanvasShadow: true
+            w: 170
+            x: 620
+            y: 280
+          slots:
+            default:
+              - component: oh-label-card
+                config:
+                  action: analyzer
+                  actionAnalyzerCoordSystem: time
+                  actionAnalyzerItems:
+                    - ptEXPiscinaTemperaturaAcqua
+                  fontSize: 32px
+                  icon: iconify:carbon:temperature-celsius
+                  iconSize: 40
+                  item: grTemperaturePS
+                  label: = Math.round(items.ptEXPiscinaTemperaturaAcqua.state * 10.0) / 10.0 + "°"
+                  noShadow: true
+                  outline: true
+                  title: PISCINA
+                  vertical: false
+        - component: oh-canvas-item
+          config:
+            h: 86
+            noCanvasShadow: true
+            w: 94
+            x: 179
+            y: 610
+          slots:
+            default:
+              - component: oh-label-card
+                config:
+                  fontSize: 32px
+                  icon: iconify:fluent-emoji-high-contrast:mosquito
+                  iconColor: "=(@'ptEXAntizanzareGazebo' == 'OFF') ? 'gray' : 'green'"
+                  iconSize: 48
+                  noBorder: true
+                  noShadow: true
+                  outline: false
+                  vertical: false
+        - component: oh-canvas-item
+          config:
+            h: 86
+            noCanvasShadow: true
+            w: 168
+            x: 106
+            y: 610
+          slots:
+            default:
+              - component: oh-label-card
+                config:
+                  fontSize: 32px
+                  icon: iconify:tabler:spray
+                  iconColor: "=(@'ptEXAntizanzareGazebo' == 'OFF') ? 'gray' : 'green'"
+                  iconSize: 48
+                  noShadow: true
+                  outline: true
+                  vertical: false
