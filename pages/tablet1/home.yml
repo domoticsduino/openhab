@@ -460,7 +460,7 @@ canvas:
             noCanvasShadow: true
             w: 190
             x: 431
-            y: 399
+            y: 398
           slots:
             default:
               - component: oh-label-card
@@ -554,25 +554,22 @@ canvas:
             h: 86
             noCanvasShadow: true
             w: 270
-            x: 278
+            x: 275
             y: 610
           slots:
             default:
               - component: oh-label-card
                 config:
-                  action: toggle
-                  actionCommand: ON
-                  actionCommandAlt: OFF
-                  actionGroupPopupItem: ptEXPompaPiscina
-                  actionItem: ptEXPompaPiscina
                   fontSize: 32px
-                  icon: iconify:mdi:swimming-pool
-                  iconColor: "=(@'ptEXPompaPiscina') == 'ON' ? 'cyan' : 'gray'"
+                  icon: =@'grLuciNatale'=='ON'?'iconify:twemoji:christmas-tree':'iconify:fluent-emoji-high-contrast:christmas-tree'
+                  iconColor: gray
                   iconSize: 52
-                  item: ptEXPompaPiscina
+                  label: Luci Natale
                   noShadow: true
                   outline: true
                   vertical: false
+                  action: group
+                  actionGroupPopupItem: grLuciNatale
         - component: oh-canvas-item
           config:
             h: 86
@@ -606,22 +603,19 @@ canvas:
             noCanvasShadow: true
             w: 170
             x: 620
-            y: 280
+            y: 279
           slots:
             default:
               - component: oh-label-card
                 config:
-                  action: analyzer
-                  actionAnalyzerCoordSystem: time
-                  actionAnalyzerItems:
-                    - ptEXPiscinaTemperaturaAcqua
                   fontSize: 32px
                   icon: iconify:carbon:temperature-celsius
                   iconSize: 40
-                  item: grTemperaturePS
-                  label: = Math.round(items.ptEXPiscinaTemperaturaAcqua.state * 10.0) / 10.0 + "°"
+                  label: = "N.A."
                   noShadow: true
                   outline: true
+                  style:
+                    opacity: 0.2
                   title: PISCINA
                   vertical: false
         - component: oh-canvas-item
@@ -637,11 +631,13 @@ canvas:
                 config:
                   fontSize: 32px
                   icon: iconify:fluent-emoji-high-contrast:mosquito
-                  iconColor: "=(@'ptEXAntizanzareGazebo' == 'OFF') ? 'gray' : 'green'"
+                  iconColor: gray
                   iconSize: 48
                   noBorder: true
                   noShadow: true
                   outline: false
+                  style:
+                    opacity: 0.2
                   vertical: false
         - component: oh-canvas-item
           config:
@@ -649,15 +645,17 @@ canvas:
             noCanvasShadow: true
             w: 168
             x: 106
-            y: 610
+            y: 611
           slots:
             default:
               - component: oh-label-card
                 config:
                   fontSize: 32px
                   icon: iconify:tabler:spray
-                  iconColor: "=(@'ptEXAntizanzareGazebo' == 'OFF') ? 'gray' : 'green'"
+                  iconColor: gray
                   iconSize: 48
                   noShadow: true
                   outline: true
+                  style:
+                    opacity: 0.2
                   vertical: false
