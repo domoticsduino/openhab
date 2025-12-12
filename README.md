@@ -1,4 +1,4 @@
-# OpenHAB4 Config and Support Tools
+# OpenHAB Config and Support Tools
 
 ## /backup-script/oh4-full-backup.sh
 
