@@ -560,16 +560,21 @@ canvas:
             default:
               - component: oh-label-card
                 config:
+                  action: toggle
+                  actionCommand: ON
+                  actionCommandAlt: OFF
+                  actionGroupPopupItem: ptEXPompaPiscina
+                  actionItem: ptEXPompaPiscina
                   fontSize: 32px
-                  icon: =@'grLuciNatale'=='ON'?'iconify:twemoji:christmas-tree':'iconify:fluent-emoji-high-contrast:christmas-tree'
-                  iconColor: gray
+                  icon: iconify:mdi:swimming-pool
+                  iconColor: "=(@'ptEXPompaPiscina') == 'ON' ? 'cyan' : 'gray'"
                   iconSize: 52
-                  label: Luci Natale
+                  label: = "N.A"
+                  style:
+                    opacity: 0.2
                   noShadow: true
                   outline: true
                   vertical: false
-                  action: group
-                  actionGroupPopupItem: grLuciNatale
         - component: oh-canvas-item
           config:
             h: 86
