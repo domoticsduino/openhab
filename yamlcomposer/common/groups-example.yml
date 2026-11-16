@@ -1,0 +1,23 @@
+version: 1
+
+variables:
+  <<: !include $_pkg/_common/globals.inc.yml
+
+packages:
+
+  grLuci: !include
+    file: $_pkg/_common/item_group.inc.yml
+    vars:
+      label: "Luci"
+      icon: ${common.outputs.light.icon}
+      format: null
+      parent: null
+      tags: ${common.outputs.light.tags}
+      location: "glCasa"
+      group_type: "Switch"
+      function: "OR"
+      parameters: ["ON", "OFF"]
+      influx_value: ${common.outputs.light.influxdb}
+      influx_piano: null
+      influx_stanza: null
+      matter: ${common.outputs.light.matter}

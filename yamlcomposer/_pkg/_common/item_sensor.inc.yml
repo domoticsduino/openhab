@@ -1,0 +1,55 @@
+variables:
+  sensor: null
+  idx: 0
+  stanza: null
+  piano: null
+  channels: null
+  channels_ts: null
+  check_ts: true
+  
+<<: !if
+  if: "sensor != null"
+  then:
+    "pt${sensor.id}":
+      type: "${sensor.item_type}"
+      !if "sensor.dimension != null":
+        dimension: "${sensor.dimension}"
+      label: "${sensor.label}"
+      icon: "${sensor.icon}"
+      groups: ${['eq' ~ (sensor.equipment | default(sensor.id)), common.persistence_group if sensor.influxdb_table != null] + (sensor.groups if sensor.groups is defined and sensor.groups != null else [])}
+      tags: ${sensor.tags}
+      channels: ${channels | default(null)}
+      !if "sensor.unit != null":
+        unit: ${sensor.unit}
+      metadata:
+        !if "sensor.influxdb_table != null":
+          influxdb:
+            value: "${sensor.influxdb_table}"
+            config:
+              stanza: "${stanza}"
+              piano: "${piano}"
+        !if "sensor.format != null":
+          stateDescription:
+            value: " "
+            config:
+              pattern: "${sensor.format}"
+        !if "sensor.matter != null":
+          matter: ${sensor.matter}
+    <<: !if
+      if: "channels_ts != null"
+      then:
+        "pt${sensor.id}TS":
+          type: DateTime
+          label: "TS ${sensor.label}"
+          icon: ${common.sensors._ts.icon}
+          groups: ${[common.sensors._ts.group_check if check_ts else common.sensors._ts.group, common.persistence_group, 'eq' ~ (sensor.equipment | default('Sensore'))]}
+          tags: ${common.sensors._ts.tags}
+          channels: ${channels_ts}
+          metadata:
+            influxdb:
+              value: ${common.sensors._ts.influxdb_table}
+            !if "common.sensors._ts.format != null":
+              stateDescription:
+                value: " "
+                config:
+                  pattern: ${common.sensors._ts.format}

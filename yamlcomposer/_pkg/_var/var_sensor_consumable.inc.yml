@@ -1,0 +1,9 @@
+variables:
+  item_type: ${common.sensors.consumable.item_type}
+  unit: ${common.sensors.consumable.unit}
+  icon: ${common.sensors.consumable.icon}
+  tags: ${common.sensors.consumable.tags}
+  influxdb_table: ${common.sensors.consumable.influxdb_table}
+  format: ${common.sensors.consumable.format}
+  
+<<: !include $_pkg/_var/var_sensor.inc.yml

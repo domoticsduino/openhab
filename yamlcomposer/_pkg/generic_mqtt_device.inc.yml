@@ -1,0 +1,66 @@
+variables:
+  device_name: ${package_id}
+  label: "${device_name}"
+  broker: "mqtt:broker:${common.mqtt.broker_id}"
+  piano: ""
+  stanza: ""
+  location_group: "${'gl' ~ stanza if stanza != '' else 'glCasa'}"
+  pfx: "${piano}${stanza}"
+  dev_clean: "${device_name | replace('-', '_') | replace('.', '_')}"
+  ip_address: null
+  equipments: []
+  outputs: []
+  sensors: []
+  mqtt_thing_uid: "mqtt:topic:${common.mqtt.broker_id}:${device_name}"
+  is_multioutput: true
+
+packages:
+  <<: !if
+    if: ip_address != null
+    then:
+      network_pkg: !include
+        file: $_pkg/network_device.inc.yml
+        vars:
+          package_id: "${package_id}"
+          label: "${label}"
+          ip: "${ip_address}"
+          piano: "${piano}"
+          stanza: "${stanza}"
+
+things:
+  ${mqtt_thing_uid}:
+    bridge: ${broker}
+    label: "${label}"
+    location: "${stanza}"
+    channels:
+      !for "idx, output in outputs | enumerate":
+        "ch${dev_clean}Output${idx + 1}":
+          type: switch
+          label: "${output.label | default('Relè ' ~ (idx + 1))}"
+          config:
+            stateTopic: "${output.state_topic}"
+            transformationPattern: "${output.transformation_pattern}"
+            commandTopic: "${output.command_topic}"
+            transformationPatternOut: "${output.transformation_pattern_out}"
+            qos: ${common.mqtt.qos}
+      !for "idx, sensor in sensors | enumerate":
+        "ch${dev_clean}Sensor${idx + 1}":
+          type: "${sensor.channel_type | default('number')}"
+          label: "${sensor.label}"
+          config:
+            stateTopic: "${sensor.state_topic}"
+            transformationPattern: "${sensor.transformation_input}"
+            qos: ${common.mqtt.qos}
+            !if "sensor.unit != null":
+              unit: "${sensor.unit}"
+
+items:
+  
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+
+  !for "idx, output in outputs | enumerate":
+    <<: !include $_pkg/_common/mqtt_item_output.inc.yml
+
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include $_pkg/_common/mqtt_item_sensor.inc.yml

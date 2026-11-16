@@ -1,0 +1,5 @@
+variables:
+  tags: ${common.equipments.robotvacuum.tags}
+  icon: ${common.equipments.robotvacuum.icon}
+
+<<: !include $_pkg/_var/var_equipment.inc.yml

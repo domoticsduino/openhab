@@ -1,0 +1,52 @@
+variables:
+  thing_uid: miio:${thing_type}:${package_id}
+  piano: null
+  stanza: null
+  communication: ${common.miio.communication}
+  outputs: null
+  sensors: null
+  equipments: null
+
+packages:
+  <<: !if
+    if: ip_address != null
+    then:
+      network_pkg: !include
+        file: $_pkg/network_device.inc.yml
+        vars:
+          package_id: "${package_id}"
+          label: "${label}"
+          ip: "${ip_address}"
+          piano: "${piano}"
+          stanza: "${stanza}"
+
+things:
+  ${thing_uid}:
+    label: "${label}"
+    location: "${stanza}"
+    config:
+      host: ${ip_address}
+      token: ${token}
+      deviceId: ${device_id}
+      model: ${model}
+      communication: ${communication}
+
+items:
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+  !for "idx, output in outputs | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_output.inc.yml
+      vars:
+        output: ${output}
+        channels:
+          !for "idx, ch in output.channels | enumerate":
+            - ${thing_uid}:${ch}: {}
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_sensor.inc.yml
+      vars:
+        sensor: ${sensor}
+        channels:
+          !for "idx, ch in sensor.channels | enumerate":
+            - ${thing_uid}:${ch}: {}

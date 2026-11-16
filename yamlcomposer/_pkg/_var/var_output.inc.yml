@@ -1,0 +1,29 @@
+variables:
+  equipment: null
+  groups: []
+  icon: null
+  tags: []
+  influxdb_table: null
+  matter: null
+  channels: null
+  state_topic: null
+  command_topic: null
+  transformation_pattern: null
+  transformation_pattern_out: null
+  is_tasmota: false
+  item_type: null
+
+item_type: ${item_type}
+id: ${id}
+label: "${label}"
+equipment: "${equipment | default(id)}"
+groups: ${groups}
+icon: ${icon}
+tags: ${tags}
+influxdb_table: ${influxdb_table}
+matter: ${matter}
+channels: ${channels}
+state_topic: ${state_topic}
+command_topic: ${command_topic}
+transformation_pattern: ${transformation_pattern}
+transformation_pattern_out: ${transformation_pattern_out}

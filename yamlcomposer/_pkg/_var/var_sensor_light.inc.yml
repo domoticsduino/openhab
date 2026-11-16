@@ -1,0 +1,11 @@
+variables:
+  channel_type: ${common.sensors.light.channel_type}
+  item_type: ${common.sensors.light.item_type}
+  unit: ${common.sensors.light.unit}
+  icon: ${common.sensors.light.icon}
+  transformation_input: ${common.sensors.light.transformation_input}
+  tags: ${common.sensors.light.tags}
+  influxdb_table: ${common.sensors.light.influxdb_table}
+  format: ${common.sensors.light.format}
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

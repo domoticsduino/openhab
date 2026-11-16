@@ -1,0 +1,53 @@
+version: 1
+
+variables:
+  <<: !include $_pkg/_common/globals.inc.yml
+
+templates:
+  bridges_tmpl:
+    things:
+      ${type}:${id}:
+        isBridge: true
+        label: ${label}
+        config: ${config}
+
+packages:
+  mqtt_bridge: !insert
+    template: bridges_tmpl
+    vars:
+      id: ${common.mqtt.broker_id}
+      type: "mqtt:broker"
+      label: "MQTT Broker RPI4"
+      config:
+        host: xxx.xxx.xxx.xxx
+        secure: ""
+        hostnameValidated: false
+        clientID: OH5_MQTT_CLIENT_ID
+        username: "xxx"
+        password: "xxx"
+        lwtQos: 0
+        publickeypin: 1
+        keepAlive: 60
+        hostnameValidated: 0
+        birthRetain: 1
+        certificatepin: 1
+        shutdownRetain: 1
+        protocol: TCP
+        qos: 0
+        reconnectTime: 60000
+        mqttVersion: "V3"
+        lwtRetain: 1
+        enableDiscovery: 1
+  
+  lgthinq_bridge: !insert
+    template: bridges_tmpl
+    vars:
+      id: ${common.lgthinq.bridge.id}
+      type: ${common.lgthinq.bridge.type}
+      label: "LG ThinQ GatewayBridge"
+      config:
+        country: "IT"
+        username: "xxx"
+        password: "xxx"
+        language: "it-IT"
+        poolingIntervalSec: 600

@@ -1,0 +1,10 @@
+variables:
+  icon: null
+  tags: []
+  location_group: null
+  
+id: ${id}
+label: "${label}"
+icon: ${icon}
+tags: ${tags}
+location_group: ${location_group}

@@ -1,0 +1,9 @@
+variables:
+  item_type: ${common.sensors.duration.item_type}
+  unit: ${common.sensors.duration.unit}
+  icon: ${common.sensors.duration.icon}
+  tags: ${common.sensors.duration.tags}
+  influxdb_table: ${common.sensors.duration.influxdb_table}
+  format: ${common.sensors.duration.format}
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

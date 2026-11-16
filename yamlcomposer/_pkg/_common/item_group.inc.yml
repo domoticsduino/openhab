@@ -1,0 +1,28 @@
+variables:
+  stanza: null
+  piano: null
+  groups: null
+  parent : null
+  location: null
+  tags: null
+
+items:
+  ${package_id}:
+    type: Group
+    label: ${label}
+    icon: ${icon}
+    format: ${format}
+    !if "parent != null or location != null or groups != null":
+      groups: ${[parent if parent != null] + [location if location != null] + (groups if groups != null)}
+    !if "tags != null":
+      tags: ${tags}
+    group:
+      type: ${group_type}
+      function: ${function}
+      parameters: ${parameters}
+    metadata:
+      influxdb:
+        value: ${influx_value}
+        config:
+          piano: ${influx_piano}
+          stanza: ${influx_stanza}

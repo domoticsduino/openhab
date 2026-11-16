@@ -1,0 +1,348 @@
+common:
+
+  persistence_group: "grPersistence"
+
+  ntp:
+    hostname: 0.pool.ntp.org
+    refresh_interval: 60
+    refresh_ntp: 30
+    server_port: 123
+
+  logreader:
+    refresh_rate: 1000
+    file_path: /var/log/openhab/openhab.log
+
+  mqtt:
+    broker_id: "xxxxxx"
+    qos: "1"
+    tasmota_topic_base_path: "smarthome/tasmota"
+    shelly_topic_base_path: "smarthome/shelly"
+    esp8266_topic_base_path: "smarthome"
+    switchbot_topic_base_path: "smarthome/switchbot"
+
+  matter:
+    controller:
+      id: smarthome
+    endpoint:
+      polling_interval: 1800
+      operating_mode: 0
+
+  speedtest:
+    refresh_interval: 60
+    label: Speedtest
+    influxdb_table: speedtest
+
+  miio:
+    communication: "direct"
+    vacuumv1:
+      thing_type: "vacuum"
+      device_id: "xxxxxx"
+      model: "xxxxxx"
+
+  lgthinq:
+    platform_type: "thinq2"
+    bridge: 
+      id: "MyLGThinqBridge"
+      type: "lgthinq:cloud-account"
+    washer:
+      type: "xxxxxx"
+      model_id: "xxxxxx"
+      model_url_info: "xxxxxx"
+      polling_period_power_on_seconds: 10
+      polling_period_power_off_seconds: 10
+
+  amazon:
+    bridge:
+      id: xxxxxx
+      type: "amazonechocontrol:account"
+    echo:
+      type: "amazonechocontrol:echo"
+    
+  labels:
+    sonoff4ch: "Sonoff4CH"
+    sonoff4chpro: "Sonoff4CH PRO"
+    sonoffpow: "SonoffPOW"
+    sonoffbasic: "SonoffBASIC"
+    sonoffdual: "SonoffDUAL"
+    sonoffmini: "SonoffMINI"
+    shellyplus2mp: "ShellyPLUS 2PM"
+    wifiaccesspoint: "Wifi Access Point"
+    wifirepeater: "Wifi Repeater"
+    esp8266mcu: "Esp8266"
+    googlehomemini: "Google Home Mini"
+    androidtablet: "Android Tablet"
+
+  equipments:
+
+    robotvacuum:
+      icon: "movecontrol"
+      tags: ["CleaningRobot"]
+
+    server:
+      icon: "settings"
+      tags: ["Computer"]
+
+    light:
+      icon: "lightbulb"
+      tags: ["Lightbulb"]
+
+    speedtest:
+      icon: "line"
+      tags: ["NetworkAppliance"]
+      label: "Speedtest"
+
+    weather_station:
+      tags: ["WeatherStation"]
+      icon: "sun_clouds"
+    
+    power:
+      tags: ["Sensor"]
+      icon: "energy"
+
+    switch:
+      tags: ["Button"]
+      icon: "switch"
+
+    thermostat:
+      tags: ["Sensor"]
+      icon: "heating"
+
+    irrigation:
+      tags: ["Irrigation"]
+      icon: "rain"
+      groups: ["grIrrigazione"]
+
+    gas:
+      tags: ["Sensor"]
+      icon: "gas"
+
+    smartlock:
+      tags: ["Lock"]
+      icon: "lock"
+
+    washer:
+      tags: ["WhiteGood"]
+      icon: "washingmachine"
+
+    chromecast:
+      tags: ["VoiceAssistant"]
+      icon: "microphone"
+
+    amazonecho:
+      tags: ["VoiceAssistant"]
+      icon: "microphone"
+
+    controlpanel:
+      tags: ["RemoteControl"]
+      icon: "screen"
+
+  outputs:
+    light:
+      type: "Switch"
+      icon: "light"
+      tags: ['Switch', 'Light']
+      influxdb_table: "luce"
+      matter: "OnOffLight"
+
+    switch:
+      type: "Switch"
+      icon: "switch"
+      tags: ['Switch']
+      influxdb_table: "switch"
+      matter: "OnOffPlugInUnit"
+
+    irrigation:
+      type: "Switch"
+      icon: "faucet"
+      tags: ['Switch', 'Water']
+      influxdb_table: "irrigazione"
+      matter: "OnOffPlugInUnit"
+
+    smartlock:
+      type: "Switch"
+      tags: ["Lock"]
+      icon: "lock"
+      influxdb_table: "smartlock"
+      matter: "DoorLock"
+
+    volumecontrol:
+      type: "Dimmer"
+      tags: ["Control", "SoundVolume"]
+      icon: "soundvolume"
+      format: "%d %%"
+      influxdb_table: null
+      matter: null
+      
+  sensors:
+    _ts:
+      icon: calendar
+      group: grTS
+      group_check: grTSCheck
+      tags: [Status, Timestamp]
+      profile: "system:timestamp-update"
+      influxdb_table: "ultimo_aggiornamento"
+      format: "%1$td/%1$tm/%1$ty %1$tH:%1$tM"
+
+    temperature:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "temperature"
+      tags: ["Measurement", "Temperature"]
+      influxdb_table: "temperatura"
+      format: "%.1f"
+      matter: "TemperatureSensor"
+      unit: "° C"
+      transformation_input: "JSONPATH:$.DHT11.Temperature"
+
+    battery:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "batterylevel"
+      tags: ["Measurement", "Energy"]
+      influxdb_table: "batteria"
+      format: "%d %%"
+      matter: "Battery"
+      unit: "%"
+      transformation_input: "JSONPATH:$.context.battery"
+
+    brightness:
+      item_type: "Number"
+      icon: "light"
+      tags: ["Measurement", "Light"]
+      influxdb_table: "luminosita"
+      format: "%d %%"
+      unit: "%"
+      
+    contact:
+      channel_type: "contact"
+      item_type: "Contact"
+      icon: "door"
+      tags: ["OpenState"]
+      influxdb_table: "contact"
+      format: null
+      matter: "ContactSensor"
+      unit: null
+      transformation_input: "JSONPATH:$.context.doorState∩MAP:smartlock.map"
+
+    humidity:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "humidity"
+      tags: ["Measurement", "Humidity"]
+      influxdb_table: "umidita"
+      format: "%d %%"
+      matter: "HumiditySensor"
+      unit: "%"
+      transformation_input: "JSONPATH:$.DHT11.Humidity"
+      transformation_input: "JSONPATH:$.DHT11.Humidity"
+
+    light:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "sun"
+      tags: ["Measurement", "Light"]
+      influxdb_table: "crepuscolare"
+      format: "%.0f lx"
+      unit: "lx"
+      transformation_input: "JSONPATH:$.ADS1115.A0"
+      transformation_input: "JSONPATH:$.ADS1115.A0"
+
+    power:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "energy"
+      groups: ["grEnergia"]
+      tags: ["Measurement", "Power"]
+      influxdb_table: "energia"
+      format: "%d W"
+      unit: "W"
+      transformation_input: "JSONPATH:$.ENERGY.Power"
+
+    systeminfo:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "settings"
+      tags: ["Measurement"]
+      influxdb_table: "systeminfo"
+      format: "%.1f %%"
+      unit: "%"
+      matter: null
+
+    gas:
+      channel_type: "number"
+      item_type: "Number"
+      icon: "gas"
+      tags: ["Measurement", "Gas"]
+      influxdb_table: "gas"
+      format: "%.1f ppm"
+      unit: "ppm"
+
+    datetime:
+      channel_type: "timestamp"
+      item_type: "DateTime"
+      icon: "calendar"
+      tags: [Status, Timestamp]
+      influxdb_table: "datetime"
+
+    robotaspirapolvere:
+      group_consumable: "grRobotAspirapolvereConsumabili"
+
+    consumable:
+      influxdb_table: "consumabili"
+      format: "%d %%"
+      icon: "chart"
+      item_type: "Number"
+      unit: "%"
+      tags: ["Measurement"]
+    duration:
+      influxdb_table: "durata"
+      format: "%d min"
+      icon: "time"
+      item_type: "Number"
+      unit: "min"
+      tags: ["Measurement", "Duration"]
+    area:
+      influxdb_table: "area"
+      format: "%.1f m2"
+      icon: "incline"
+      item_type: "Number"
+      dimension: "Area"
+      unit: "m2"
+      tags: ["Measurement"]
+      
+  network:
+    refresh_interval: 30000
+    retry: 3
+    timeout: 5000
+    icon: "network"
+    group: "grNetwork"
+    tags: [NetworkAppliance]
+
+    online:
+      icon: switch
+      network_check_error_group: grNetworkCheckError
+      tags: [Status, Presence]
+      influxdb_table: "network_online"
+
+    latency:
+      icon: line
+      tags: [Measurement, Duration]
+      influxdb_table: "network_ping"
+
+    lastseen:
+      icon: calendar
+      tags: [Status, Timestamp]
+      influxdb_table: "network_lastseen"
+      format: "%1$td/%1$tm/%1$ty %1$tH:%1$tM"
+
+    wifissid:
+      icon: network
+      group: grWifiInfoSsid
+      tags: [Status, Info]
+      influxdb_table: "wifi_ssid"
+
+    wifisignal:
+      icon: line
+      group: grWifiInfoSignal
+      tags: [Measurement, RSSI]
+      influxdb_table: "wifi_signal"

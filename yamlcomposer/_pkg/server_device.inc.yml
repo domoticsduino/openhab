@@ -1,0 +1,36 @@
+variables:
+  thing_uid: systeminfo:computer:${package_id}
+  label: null
+  location: null
+  id_address: null
+
+packages:
+  <<: !if
+    if: ip_address != null
+    then:
+      network_pkg: !include
+        file: $_pkg/network_device.inc.yml
+        vars:
+          package_id: "${package_id}"
+          label: "${label}"
+          ip: "${ip_address}"
+          piano: "${piano}"
+          stanza: "${stanza}"
+
+things:
+  ${thing_uid}:
+    label: ${label | default('System Info')}
+    !if "stanza != null":
+      location: ${stanza}
+
+items:
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+  !for "sensor in sensors":
+    <<: !include
+      file: $_pkg/_common/item_sensor.inc.yml
+      vars:
+        sensor: ${sensor}
+        channels:
+          !for "idx, ch in sensor.channels | enumerate":
+            - ${thing_uid}:${ch}: {}

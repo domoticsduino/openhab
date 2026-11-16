@@ -1,0 +1,5 @@
+variables:
+  tags: ${common.equipments.irrigation.tags}
+  icon: ${common.equipments.irrigation.icon}
+
+<<: !include $_pkg/_var/var_equipment.inc.yml

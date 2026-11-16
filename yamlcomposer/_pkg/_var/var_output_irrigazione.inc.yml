@@ -1,0 +1,9 @@
+variables:
+  item_type: ${common.outputs.irrigation.type}
+  icon: ${common.outputs.irrigation.icon}
+  tags: ${common.outputs.irrigation.tags}
+  influxdb_table: ${common.outputs.irrigation.influxdb_table}
+  matter: ${common.outputs.irrigation.matter}
+  channels: null
+
+<<: !include $_pkg/_var/var_output.inc.yml

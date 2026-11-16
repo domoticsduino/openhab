@@ -1,0 +1,5 @@
+variables:
+  tags: ${common.equipments.smartlock.tags}
+  icon: ${common.equipments.smartlock.icon}
+
+<<: !include $_pkg/_var/var_equipment.inc.yml

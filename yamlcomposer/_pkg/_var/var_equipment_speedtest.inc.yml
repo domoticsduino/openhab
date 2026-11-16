@@ -1,0 +1,6 @@
+variables:
+  tags: ${common.equipments.speedtest.tags}
+  icon: ${common.equipments.speedtest.icon}
+  label: ${common.equipments.speedtest.label}
+
+<<: !include $_pkg/_var/var_equipment.inc.yml

@@ -1,0 +1,21 @@
+variables:
+  output: null
+  idx: 0
+  stanza: null
+  piano: null
+  mqtt_thing_uid: null
+  dev_clean: null
+  has_topic_status: false
+  
+<<: !if
+  if: "output != null"
+  then:
+    <<: !include
+      file: $_pkg/_common/item_output.inc.yml
+      vars:
+        channels: 
+          "${mqtt_thing_uid}:ch${dev_clean}Output${idx + 1}": {}
+          <<: !if
+            if: has_topic_status
+            then:
+              "${mqtt_thing_uid}:ch${dev_clean}OutputStatus${idx + 1}": {}

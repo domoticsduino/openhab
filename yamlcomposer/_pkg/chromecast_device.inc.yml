@@ -1,0 +1,47 @@
+variables:
+  label: null
+  piano: null
+  stanza: null
+  ip_address: null
+  outputs: []
+  sensors: []
+  equipments: []
+
+packages:
+  <<: !if
+    if: ip_address != null
+    then:
+      network_pkg: !include
+        file: $_pkg/network_device.inc.yml
+        vars:
+          package_id: "${package_id}"
+          label: "${label}"
+          ip: "${ip_address}"
+          piano: "${piano}"
+          stanza: "${stanza}"
+
+things:
+  chromecast:chromecast:${package_id}:
+    label: ${label}
+    location: ${stanza}
+    config:
+      ipAddress: ${ip_address}
+
+items:
+  
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+
+  !for "idx, output in outputs | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_output.inc.yml
+      vars:
+        channels: ${output.channels}
+        output: ${output}
+
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_sensor.inc.yml
+      vars:
+        channels: ${sensor.channels}
+        output: ${sensor}

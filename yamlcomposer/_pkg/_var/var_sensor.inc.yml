@@ -1,0 +1,31 @@
+variables:
+  channel_type: null
+  equipment: null
+  icon: null
+  tags: []
+  influxdb_table: null
+  unit: null
+  transformation_input: null
+  format: null
+  groups: []
+  matter: null
+  state_topic: null
+  channels: null
+  dimension: null
+
+id: ${id}
+label: "${label}"
+equipment: "${equipment | default(id)}"
+channel_type: "${channel_type}"
+item_type: "${item_type}"
+unit: "${unit}"
+icon: ${icon}
+transformation_input: ${transformation_input}
+tags: ${tags}
+influxdb_table: ${influxdb_table}
+format: ${format}
+groups: ${groups}
+matter: ${matter}
+state_topic: ${state_topic}
+channels: ${channels}
+dimension: ${dimension}

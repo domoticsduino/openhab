@@ -1,0 +1,12 @@
+variables:
+  channel_type: ${common.sensors.systeminfo.channel_type}
+  item_type: ${common.sensors.systeminfo.item_type}
+  unit: ${common.sensors.systeminfo.unit}
+  icon: ${common.sensors.systeminfo.icon}
+  tags: ${common.sensors.systeminfo.tags}
+  influxdb_table: ${common.sensors.systeminfo.influxdb_table}
+  format: ${common.sensors.systeminfo.format}
+  matter: ${common.sensors.systeminfo.matter}
+  channels: null
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

@@ -1,0 +1,13 @@
+variables:
+  channel_type: ${common.sensors.battery.channel_type}
+  item_type: ${common.sensors.battery.item_type}
+  unit: ${common.sensors.battery.unit}
+  icon: ${common.sensors.battery.icon}
+  transformation_input: ${common.sensors.battery.transformation_input}
+  tags: ${common.sensors.battery.tags}
+  influxdb_table: ${common.sensors.battery.influxdb_table}
+  format: ${common.sensors.battery.format}
+  matter: ${common.sensors.battery.matter}
+  channels: null
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

@@ -1,0 +1,9 @@
+variables:
+  item_type: ${common.outputs.smartlock.type}
+  icon: ${common.outputs.smartlock.icon}
+  tags: ${common.outputs.smartlock.tags}
+  influxdb_table: ${common.outputs.smartlock.influxdb_table}
+  matter: ${common.outputs.smartlock.matter}
+  channels: null
+
+<<: !include $_pkg/_var/var_output.inc.yml

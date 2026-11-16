@@ -1,0 +1,114 @@
+version: 1
+
+templates:
+  location_tmpl:
+    items:
+      ${package_id}:
+        type: Group
+        label: ${label}
+        icon: ${icon}        
+        groups: !if
+          if: parent != null
+          then:
+            - ${parent}
+        tags:
+          - ${tag}
+        
+packages:
+
+  # -------------------------------------------------------
+  # LIVELLO 1
+  # -------------------------------------------------------
+
+  glCasa: !insert
+    template: location_tmpl
+    vars:
+      label: "Casa"
+      icon: house
+      tag: House
+      semantic_type: Location_Indoor_Building_House
+      parent: null
+
+  # -------------------------------------------------------
+  # LIVELLO 2
+  # -------------------------------------------------------
+
+  glCasaInterno: !insert
+    template: location_tmpl
+    vars:
+      label: "Interno Casa"
+      icon: house
+      parent: glCasa
+      tag: House
+      semantic_type: Location_Indoor
+
+  glGiardino: !insert
+    template: location_tmpl
+    vars:
+      label: "Giardino"
+      icon: garden
+      parent: glCasa
+      tag: Garden
+      semantic_type: Location_Outdoor_Garden
+
+  # -------------------------------------------------------
+  # LIVELLO 3 - INTERNO
+  # -------------------------------------------------------
+
+  glPianoTerra: !insert
+    template: location_tmpl
+    vars:
+      label: "Piano Terra"
+      icon: groundfloor
+      parent: glCasaInterno
+      tag: GroundFloor
+      semantic_type: Location_Indoor_Floor_GroundFloor
+
+  glPrimoPiano: !insert
+    template: location_tmpl
+    vars:
+      label: "Primo Piano"
+      icon: firstfloor
+      parent: glCasaInterno
+      tag: FirstFloor
+      semantic_type: Location_Indoor_Floor_FirstFloor
+
+  # -------------------------------------------------------
+  # LIVELLO 4 - SEMINTERRATO
+  # -------------------------------------------------------
+
+  glCucina: !insert
+    template: location_tmpl
+    vars:
+      label: "Cucina"
+      icon: kitchen
+      parent: glPianoTerra
+      tag: Kitchen
+      semantic_type: Location_Indoor_Room_Kitchen
+
+  glSoggiorno: !insert
+    template: location_tmpl
+    vars:
+      label: "Soggiorno"
+      icon: sofa
+      parent: glPianoTerra
+      tag: LivingRoom
+      semantic_type: Location_Indoor_Room_LivingRoom
+
+  glCameretta: !insert
+    template: location_tmpl
+    vars:
+      label: "Cameretta"
+      icon: bedroom_blue
+      parent: glPrimoPiano
+      tag: Bedroom
+      semantic_type: Location_Indoor_Room_Bedroom
+
+  glMansarda: !insert
+    template: location_tmpl
+    vars:
+      label: "Mansarda"
+      icon: office
+      parent: glPrimoPiano
+      tag: Office
+      semantic_type: Location_Indoor_Room_Office

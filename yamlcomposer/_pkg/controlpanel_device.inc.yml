@@ -1,0 +1,36 @@
+variables:
+  device_name: ${package_id}
+  label: "${device_name}"
+  piano: ""
+  stanza: ""
+  location_group: "${'gl' ~ stanza if stanza != '' else 'glCasa'}"
+  pfx: "${piano}${stanza}"
+  dev_clean: "${device_name | replace('-', '_') | replace('.', '_')}"
+  ip_address: null
+  equipments: []
+  outputs: []
+  sensors: []
+
+packages:
+  <<: !if
+    if: ip_address != null
+    then:
+      network_pkg: !include
+        file: $_pkg/network_device.inc.yml
+        vars:
+          package_id: "${package_id}"
+          label: "${label}"
+          ip: "${ip_address}"
+          piano: "${piano}"
+          stanza: "${stanza}"
+
+items:
+  
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+
+  !for "idx, output in outputs | enumerate":
+    <<: !include $_pkg/_common/item_output.inc.yml
+
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include $_pkg/_common/item_sensor.inc.yml

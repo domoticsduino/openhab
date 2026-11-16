@@ -1,0 +1,91 @@
+variables:
+  check_error: true
+  ip: null
+  piano: null
+  stanza: null
+  semantic_group: null
+  location_group: null
+
+  dev_id: ${package_id}
+  label: "${dev_id}"
+  ip_thing_id: ${ip | replace('.', '_')}
+  network_thing_uid: "network:pingdevice:${ip_thing_id}"
+  id: "${piano}${stanza}${dev_id}Network"
+  
+things:
+  ${network_thing_uid}:
+    label: "${label} Network"
+    location: ${stanza}
+    config:
+      hostname: ${ip}
+      refreshInterval: ${common.network.refresh_interval}
+      retry: ${common.network.retry}
+      timeout: ${common.network.timeout}
+
+items:
+  <<: !include 
+    file: $_pkg/_common/item_equipment.inc.yml
+    vars:
+      equip:
+        id: ${id}
+        label: "${label} Network"
+        icon: ${common.network.icon}
+        groups:
+          - ${common.network.group}
+          - ${semantic_group}
+        location_group: ${location_group}
+        tags: ${common.network.tags}
+
+  <<: !include 
+    file: $_pkg/_common/item_sensor.inc.yml
+    vars:
+      sensor:
+        id: ${id}Online
+        item_type: Switch
+        label: "${label} Online"
+        icon: ${common.network.online.icon}
+        equipment: ${id}
+        groups: "${ ([common.network.online.network_check_error_group] if check_error else []) | default([]) }"
+        tags: ${common.network.online.tags}
+        influxdb_table: ${common.network.online.influxdb_table}
+      channels: 
+        "${network_thing_uid}:online": {}
+      channels_ts: 
+        "${network_thing_uid}:online": 
+          "profile": "${common.sensors._ts.profile}"
+
+  <<: !include 
+    file: $_pkg/_common/item_sensor.inc.yml
+    vars:
+      sensor:
+        id: ${id}Latency
+        item_type: Number
+        dimension: Time
+        label: "${label} Latency"
+        icon: ${common.network.latency.icon}
+        equipment: ${id}
+        tags: ${common.network.latency.tags}
+        influxdb_table: ${common.network.latency.influxdb_table}
+      channels: 
+        "${network_thing_uid}:latency": {}
+      channels_ts: 
+        "${network_thing_uid}:latency": 
+          "profile": "${common.sensors._ts.profile}"
+
+  <<: !include 
+    file: $_pkg/_common/item_sensor.inc.yml
+    vars:
+      sensor:
+        id: ${id}LastSeen
+        item_type: DateTime
+        label: "${label} LastSeen"
+        icon: ${common.network.lastseen.icon}
+        format: ${common.network.lastseen.format}
+        equipment: ${id}
+        tags: ${common.network.lastseen.tags}
+        influxdb_table: ${common.network.lastseen.influxdb_table}
+      channels: 
+        "${network_thing_uid}:lastseen": {}
+      channels_ts: 
+        "${network_thing_uid}:lastseen": 
+          "profile": "${common.sensors._ts.profile}"

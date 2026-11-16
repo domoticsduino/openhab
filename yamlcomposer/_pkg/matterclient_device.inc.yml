@@ -1,0 +1,70 @@
+variables:
+  controller_id: "matter:controller:${common.matter.controller.id}"
+  node_id_prefix: "matter:node:${common.matter.controller.id}"
+  endpoint_id_prefix: "matter:endpoint:${common.matter.controller.id}"
+  nodes: []
+  equipments: []
+  outputs: []
+  sensors: []
+  
+packages:
+  !for "idx, node in nodes | enumerate":
+    <<: !if
+      if: node.ip_address != null
+      then:
+        network_pkg: !include
+          file: $_pkg/network_device.inc.yml
+          vars:
+            package_id: "${node.id}"
+            label: "${node.label}"
+            ip: "${node.ip_address}"
+            piano: "${node.piano}"
+            stanza: "${node.stanza}"
+            eq_item: "eq${node.piano}${node.stanza}${node.id}Network"
+            location_group: ${node.location_group}
+
+things:
+  ${controller_id}:
+    isBridge: true
+
+  !for "idx, node in nodes | enumerate":
+    ${node_id_prefix}:${node.id}:
+      isBridge: true
+      bridge: ${controller_id}
+      label: "${node.label | default('Node ${idx + 1}')}"
+      location: "${node.stanza}"
+      config:
+        nodeId: "${node.matter_id}"
+
+    !for "idx2, ep in node.endpoints | enumerate":
+      ${endpoint_id_prefix}:${node.id}:${ep.id}:
+        bridge: ${node_id_prefix}:${node.id}
+        label: "${ep.label | default('Node ${idx + 1} Endpoint ${ep.id}')}"
+        location: "${ep.stanza}"
+        config:
+          endpointId: ${ep.id}
+          pollInterval: ${ep.polling_interval | default(common.matter.endpoint.polling_interval)}
+          operatingMode: ${ep.operating_mode | default(common.matter.endpoint.operating_mode)}
+        channels:
+          !for "idx3, ch in ep.channels | enumerate":
+            "${ep.id}#${ch.id}":
+              type: ${ch.type | default(ch.id)}
+
+items:
+
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+
+  !for "idx, output in outputs | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_output.inc.yml
+      vars:
+        channels: ${output.channels}
+        output: ${output}
+
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_sensor.inc.yml
+      vars:
+        channels: ${sensor.channels}
+        output: ${sensor}

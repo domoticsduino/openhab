@@ -1,0 +1,24 @@
+variables:
+  sensor: null
+  idx: 0
+  stanza: null
+  piano: null
+  mqtt_thing_uid: null
+  dev_clean: null
+  channels: null
+  has_ts: true
+  
+<<: !if
+  if: "sensor != null"
+  then:
+    <<: !include
+      file: $_pkg/_common/item_sensor.inc.yml
+      vars:
+        channels:
+          "${mqtt_thing_uid}:ch${dev_clean}Sensor${idx + 1}": {}
+        <<: !if
+          if: has_ts
+          then:
+            channels_ts: 
+              "${mqtt_thing_uid}:ch${dev_clean}Sensor${idx + 1}":
+                  profile: ${common.sensors._ts.profile}

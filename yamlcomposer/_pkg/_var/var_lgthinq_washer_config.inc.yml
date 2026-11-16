@@ -1,0 +1,16 @@
+variables:
+  device_alias: null
+  device_id: null
+  model_id: ${common.lgthinq.washer.model_id}
+  model_url_info: ${common.lgthinq.washer.model_url_info}
+  platform_type: ${common.lgthinq.platform_type}
+  polling_period_power_on_seconds: ${common.lgthinq.washer.polling_period_power_on_seconds}
+  polling_period_power_off_seconds: ${common.lgthinq.washer.polling_period_power_off_seconds}
+
+deviceAlias: ${device_alias}
+deviceId: ${device_id}
+modelId: ${model_id}
+modelUrlInfo: ${model_url_info}
+platformType: ${platform_type}
+pollingPeriodPowerOnSeconds: ${polling_period_power_on_seconds} 
+pollingPeriodPowerOffSeconds: ${polling_period_power_off_seconds}

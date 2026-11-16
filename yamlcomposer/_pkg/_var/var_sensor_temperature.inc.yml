@@ -1,0 +1,12 @@
+variables:
+  channel_type: ${common.sensors.temperature.channel_type}
+  item_type: ${common.sensors.temperature.item_type}
+  unit: ${common.sensors.temperature.unit}
+  icon: ${common.sensors.temperature.icon}
+  transformation_input: ${common.sensors.temperature.transformation_input}
+  tags: ${common.sensors.temperature.tags}
+  influxdb_table: ${common.sensors.temperature.influxdb_table}
+  format: ${common.sensors.temperature.format}
+  matter: ${common.sensors.temperature.matter}
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

@@ -1,0 +1,12 @@
+variables:
+  channel_type: ${common.sensors.humidity.channel_type}
+  item_type: ${common.sensors.humidity.item_type}
+  unit: ${common.sensors.humidity.unit}
+  icon: ${common.sensors.humidity.icon}
+  transformation_input: ${common.sensors.humidity.transformation_input}
+  tags: ${common.sensors.humidity.tags}
+  influxdb_table: ${common.sensors.humidity.influxdb_table}
+  format: ${common.sensors.humidity.format}
+  matter: ${common.sensors.humidity.matter}
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

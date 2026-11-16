@@ -1,0 +1,9 @@
+variables:
+  item_type: ${common.outputs.light.type}
+  icon: ${common.outputs.light.icon}
+  tags: ${common.outputs.light.tags}
+  influxdb_table: ${common.outputs.light.influxdb_table}
+  matter: ${common.outputs.light.matter}
+  channels: null
+
+<<: !include $_pkg/_var/var_output.inc.yml

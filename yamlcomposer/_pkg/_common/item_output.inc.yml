@@ -1,0 +1,25 @@
+variables:
+  output: null
+  idx: 0
+  stanza: null
+  piano: null
+  channels: null
+  
+<<: !if
+  if: "output != null"
+  then:
+    "pt${output.id}":
+      type: "${output.item_type}"
+      label: "${output.label | default('Relè ' ~ (idx + 1))}"
+      icon: "${output.icon}"
+      groups: ${['eq' ~ (output.equipment | default('Outputs')), common.persistence_group] + (output.groups if output.groups is defined and output.groups != null else null)}
+      tags: ${output.tags}
+      channels: ${channels} 
+      metadata:
+        influxdb:
+          value: "${output.influxdb_table}"
+          config:
+            stanza: "${stanza}"
+            piano: "${piano}"
+        !if "output.matter != null":
+          matter: "${output.matter}"

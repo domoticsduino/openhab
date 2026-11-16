@@ -1,0 +1,5 @@
+variables:
+  tags: ${common.equipments.server.tags}
+  icon: ${common.equipments.server.icon}
+
+<<: !include $_pkg/_var/var_equipment.inc.yml

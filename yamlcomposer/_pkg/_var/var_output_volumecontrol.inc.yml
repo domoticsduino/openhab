@@ -1,0 +1,10 @@
+variables:
+  item_type: ${common.outputs.volumecontrol.type}
+  icon: ${common.outputs.volumecontrol.icon}
+  tags: ${common.outputs.volumecontrol.tags}
+  influxdb_table: ${common.outputs.volumecontrol.influxdb_table}
+  matter: ${common.outputs.volumecontrol.matter}
+  format: ${common.outputs.volumecontrol.format}
+  channels: null
+
+<<: !include $_pkg/_var/var_output.inc.yml

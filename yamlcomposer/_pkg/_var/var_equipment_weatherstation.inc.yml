@@ -1,0 +1,5 @@
+variables:
+  tags: ${common.equipments.weather_station.tags}
+  icon: ${common.equipments.weather_station.icon}
+
+<<: !include $_pkg/_var/var_equipment.inc.yml

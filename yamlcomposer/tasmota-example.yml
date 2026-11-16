@@ -1,0 +1,53 @@
+version: 1
+
+variables:
+  <<: !include $_pkg/_common/globals.inc.yml
+
+packages:
+
+  SonoffBasic01: !include
+    file: $_pkg/tasmota_device.inc.yml
+    vars:
+      label: "${common.labels.sonoffbasic} 01 Bagno Piano Terra"
+      piano: "PT"
+      stanza: "Bagno"
+      location_group: "glBagnoPT"
+      ip_address: "xxx.xxx.xxx.xxx"
+      is_multioutput: false
+      
+      equipments:
+        - !include
+          file: $_pkg/_var/var_equipment_light.inc.yml
+          vars:
+            id: "PTBagnoLuce"
+            label: "Luce Bagno Piano Terra"
+        - !include
+          file: $_pkg/_var/var_equipment_thermostat.inc.yml
+          vars:
+            id: "PTBagnoTermostato"
+            label: "Termostato Bagno Piano Terra"
+      
+      outputs:
+        - !include
+          file: $_pkg/_var/var_output_light.inc.yml
+          vars:
+            id: "PTBagnoLuce"
+            label: "Luce Bagno Piano Terra"
+            groups: ["grLuciPT"]
+            is_tasmota: true
+
+      sensors:
+        - !include
+          file: $_pkg/_var/var_sensor_temperature.inc.yml
+          vars:
+            id: "PTBagnoTemperatura"
+            equipment: "PTBagnoTermostato"
+            label: "Temperatura Bagno Piano Terra"
+            groups: ["grTemperaturePT"]
+        - !include
+          file: $_pkg/_var/var_sensor_humidity.inc.yml
+          vars:
+            id: "PTBagnoUmidita"
+            equipment: "PTBagnoTermostato"
+            label: "Umidità Bagno Piano Terra"
+            groups: ["grUmiditaPT"]

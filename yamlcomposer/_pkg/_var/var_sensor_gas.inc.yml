@@ -1,0 +1,10 @@
+variables:
+  channel_type: ${common.sensors.gas.channel_type}
+  item_type: ${common.sensors.gas.item_type}
+  unit: ${common.sensors.gas.unit}
+  icon: ${common.sensors.gas.icon}
+  tags: ${common.sensors.gas.tags}
+  influxdb_table: ${common.sensors.gas.influxdb_table}
+  format: ${common.sensors.gas.format}
+
+<<: !include $_pkg/_var/var_sensor.inc.yml

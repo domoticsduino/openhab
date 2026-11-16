@@ -1,0 +1,33 @@
+version: 1
+
+variables:
+  <<: !include $_pkg/_common/globals.inc.yml
+
+packages:
+
+  LinksysWifiAccessPoint01: !include
+    file: $_pkg/network_device.inc.yml
+    vars:
+      label: "Linksys ${common.labels.wifiaccesspoint} 01"
+      ip: "xxx.xxx.xxx.xxx"
+      location_group: "glMansarda"
+      stanza: "Mansarda"
+      piano: "PP"
+
+  WDNas01: !include
+    file: $_pkg/network_device.inc.yml
+    vars:
+      label: "WDNas 01"
+      ip: "xxx.xxx.xxx.xxx"
+      location_group: "glMansarda"
+      stanza: "Mansarda"
+      piano: "PP"
+
+  RaspberryPI301: !include
+    file: $_pkg/network_device.inc.yml
+    vars:
+      label: "Raspberry PI3 01"
+      ip: "xxx.xxx.xxx.xxx"
+      location_group: "glMansarda"
+      stanza: "Mansarda"
+      piano: "PP"

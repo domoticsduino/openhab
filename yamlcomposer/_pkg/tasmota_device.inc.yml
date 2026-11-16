@@ -1,0 +1,122 @@
+variables:
+  device_name: ${package_id}
+  label: "${device_name}"
+  broker: "mqtt:broker:${common.mqtt.broker_id}"
+  piano: ""
+  stanza: ""
+  location_group: "${'gl' ~ stanza if stanza != '' else 'glCasa'}"
+  pfx: "${piano}${stanza}"
+  dev_clean: "${device_name | replace('-', '_') | replace('.', '_')}"
+  base_topic: "${common.mqtt.tasmota_topic_base_path}/${device_name | lower}"
+  ip_address: null
+  equipments: []
+  outputs: []
+  sensors: []
+  mqtt_thing_uid: "mqtt:topic:${common.mqtt.broker_id}:${device_name}"
+  eq_network: "eq${pfx}${device_name}Network"
+  is_multioutput: true
+  has_topic_status: true
+  check_error: true
+  check_ts: true
+
+packages:
+  <<: !if
+    if: ip_address != null
+    then:
+      network_pkg: !include
+        file: $_pkg/network_device.inc.yml
+        vars:
+          package_id: "${package_id}"
+          label: "${label}"
+          ip: "${ip_address}"
+          piano: "${piano}"
+          stanza: "${stanza}"
+          # eq_item: "${eq_network}"
+
+things:
+  ${mqtt_thing_uid}:
+    bridge: ${broker}
+    label: "${label}"
+    location: "${stanza}"
+    channels:
+      !for "idx, output in outputs | enumerate":
+        "ch${dev_clean}Output${idx + 1}":
+          type: switch
+          label: "${output.label | default('Relè ' ~ (idx + 1))}"
+          config:
+            stateTopic: "${output.state_topic | default(base_topic ~ '/stat/POWER' ~ ((idx + 1) if is_multioutput else ''))}"
+            commandTopic: "${output.command_topic | default(base_topic ~ '/cmnd/power' ~ ((idx + 1) if is_multioutput else ''))}"
+            qos: ${common.mqtt.qos}
+        "ch${dev_clean}OutputStatus${idx + 1}":
+          type: switch
+          label: "${output.label | default('Relè ' ~  ((idx + 1) if is_multioutput else ''))} Status"
+          config:
+            stateTopic: "${output.state_topic | default(base_topic ~ '/tele/STATE')}"
+            transformationPattern: "JSONPATH:$.POWER${ ((idx + 1) if is_multioutput else '')}"
+            qos: ${common.mqtt.qos}
+
+      !for "idx, sensor in sensors | enumerate":
+        "ch${dev_clean}Sensor${idx + 1}":
+          type: "${sensor.channel_type | default('number')}"
+          label: "${sensor.label}"
+          config:
+            stateTopic: "${sensor.state_topic | default(base_topic ~ '/tele/SENSOR')}"
+            transformationPattern: "${sensor.transformation_input}"
+            qos: ${common.mqtt.qos}
+            unit: "${sensor.unit if sensor.unit is defined and sensor.unit != null}"
+
+      "ch${dev_clean}WifiSsid":
+        type: string
+        label: "${label} Wi-Fi SSID"
+        config:
+          stateTopic: "${base_topic}/tele/STATE"
+          transformationPattern: "JSONPATH:$.Wifi.SSId"
+          qos: ${common.mqtt.qos}
+
+      "ch${dev_clean}WifiSignal":
+        type: number
+        label: "${label} Wi-Fi Signal"
+        config:
+          stateTopic: "${base_topic}/tele/STATE"
+          transformationPattern: "JSONPATH:$.Wifi.RSSI"
+          unit: "ms"
+          qos: ${common.mqtt.qos}
+
+items:
+  
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+
+  !for "idx, output in outputs | enumerate":
+    <<: !include $_pkg/_common/mqtt_item_output.inc.yml
+
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include $_pkg/_common/mqtt_item_sensor.inc.yml
+
+  "pt${pfx}${dev_clean}NetworkWifiSsid":
+    type: String
+    label: "${label} Wi-Fi SSID"
+    icon: ${common.network.wifissid.icon}
+    groups: ["${common.network.wifissid.group}", "${common.persistence_group}", "${eq_network}"]
+    tags: ${common.network.wifissid.tags}
+    channel: "${mqtt_thing_uid}:ch${dev_clean}WifiSsid"
+    metadata:
+      influxdb: 
+        value: ${common.network.wifissid.influxdb_table}
+        config:
+          stanza: "${stanza}"
+          piano: "${piano}"
+
+  "pt${pfx}${dev_clean}NetworkWifiSignal":
+    type: Number
+    label: "${label} Wi-Fi Signal"
+    icon: ${common.network.wifisignal.icon}
+    groups: ["${common.network.wifisignal.group}", "${common.persistence_group}", "${eq_network}"]
+    tags: ${common.network.wifisignal.tags}
+    channel: "${mqtt_thing_uid}:ch${dev_clean}WifiSignal"
+    metadata:
+      influxdb: 
+        value: ${common.network.wifisignal.influxdb_table}
+        config:
+          stanza: "${stanza}"
+          piano: "${piano}"

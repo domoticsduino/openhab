@@ -1,0 +1,13 @@
+variables:
+  equip: null
+  location_group: null
+
+<<: !if
+  if: "equip != null"
+  then:
+    "eq${equip.id}":
+      type: Group
+      label: "${equip.label}"
+      tags: ${equip.tags}
+      icon: ${equip.icon}
+      groups: "${ (equip.groups | default([])) + ([equip.location_group] if equip.location_group else [location_group]) }"

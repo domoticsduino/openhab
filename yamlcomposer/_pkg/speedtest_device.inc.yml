@@ -1,0 +1,31 @@
+variables:
+  thing_uid: speedtest:speedtest:${package_id}
+  label: ${common.speedtest.label}
+  refresh_interval: ${common.speedtest.refresh_interval}
+  base_channels: ${thing_uid}
+
+things:
+  ${thing_uid}:
+    label: "${label}"
+    config:
+      refreshInterval: ${refresh_interval}
+
+items:
+  !for "equip in equipments":
+    <<: !include $_pkg/_common/item_equipment.inc.yml
+  !for "idx, output in outputs | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_output.inc.yml
+      vars:
+        output: ${output}
+        channels:
+          !for "idx, ch in output.channels | enumerate":
+            - ${thing_uid}:${ch}: {}
+  !for "idx, sensor in sensors | enumerate":
+    <<: !include 
+      file: $_pkg/_common/item_sensor.inc.yml
+      vars:
+        sensor: ${sensor}
+        channels:
+          !for "idx, ch in sensor.channels | enumerate":
+            - ${thing_uid}:${ch}: {}
